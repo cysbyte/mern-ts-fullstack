@@ -8,6 +8,8 @@ import stylesUtils from './styles/utils.module.css';
 import * as NotesApi from './network/notes_api';
 import AddNoteDialog from './components/AddNoteDialog';
 import { FaPlus } from 'react-icons/fa';
+import SignUpModal from './components/SignUpModal';
+import LoginModal from './components/LoginModal';
 
 function App() {
   const [notes, setNotes] = useState<NoteModel[]>([]);
@@ -28,12 +30,13 @@ function App() {
     loadNotes();
   }, []);
 
-  async function deleteNote(note:NoteModel) {
+  async function deleteNote(note: NoteModel) {
     try {
       await NotesApi.deleteNote(note._id);
       setNotes(notes.filter(existingNote => existingNote._id !== note._id));
     } catch (error) {
-      
+      console.log(error);
+      alert(error);
     }
   }
 
@@ -42,7 +45,7 @@ function App() {
       <Button
         className={`mb-4 ${stylesUtils.blockCenter} ${stylesUtils.flexCenter}`}
         onClick={() => setShowAddNoteDialog(true)}>
-        <FaPlus/>
+        <FaPlus />
         Add new note
       </Button>
       <Row xs={1} md={2} xl={3} className='g-4'>
@@ -64,6 +67,18 @@ function App() {
             setNotes([...notes, newNote]);
           }}
         />}
+      {false &&
+        <SignUpModal
+          onDismiss={() => { }}
+          onSignUpSuccessful={() => { }}
+        />
+      }
+      {true &&
+        <LoginModal
+          onDismiss={() => { }}
+          onLoginSuccessful={() => { }}
+        />
+      }
     </Container>
   );
 }
